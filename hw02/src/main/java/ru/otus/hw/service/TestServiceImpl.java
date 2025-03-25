@@ -39,23 +39,18 @@ public class TestServiceImpl implements TestService {
     }
 
     private boolean processAskQuestionAndReadAnswer(Collection<Answer> answers) {
-        var validAnswer = printAnswers(answers);
+        printAnswers(answers);
         var userAnswer = readUserAnswer(answers);
 
-        return userAnswer.text().equals(validAnswer);
+        return userAnswer.isCorrect();
     }
 
-    private String printAnswers(Collection<Answer> answers) {
-        String correctAnswer = null;
+    private void printAnswers(Collection<Answer> answers) {
         int number = 1;
         for (var answer : answers) {
             ioService.printFormattedLine("%d) %s", number, answer.text());
-            if (answer.isCorrect()) {
-                correctAnswer = answer.text();
-            }
             number++;
         }
-        return correctAnswer;
     }
 
     private Answer readUserAnswer(Collection<Answer> answers) {

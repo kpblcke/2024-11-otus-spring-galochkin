@@ -3,7 +3,6 @@ package ru.otus.hw.dao;
 import com.opencsv.bean.CsvToBeanBuilder;
 import java.io.FileReader;
 import java.net.URL;
-import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.otus.hw.config.TestFileNameProvider;
@@ -36,6 +35,6 @@ public class CsvQuestionDao implements QuestionDao {
         } catch (Exception e) {
             throw new QuestionReadException(e.getMessage(), e);
         }
-        return questionsDto.stream().map(QuestionDto::toDomainObject).collect(Collectors.toList());
+        return questionsDto.stream().map(QuestionDto::toDomainObject).toList();
     }
 }
