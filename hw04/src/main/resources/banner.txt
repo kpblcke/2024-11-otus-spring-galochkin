@@ -1,0 +1,13 @@
+hi                            ${AnsiColor.BRIGHT_MAGENTA} _   _${AnsiColor.DEFAULT}
+   _______________          ${AnsiColor.BRIGHT_MAGENTA}|*\_/*|${AnsiColor.DEFAULT}________
+  |  ___________  |        |${AnsiColor.BRIGHT_MAGENTA}|_/-\_|${AnsiColor.DEFAULT}______  |
+  | |           | |        | |           | |
+  | |   0   0   | |        | |   0   0   | |
+  | |     -     | |        | |     -     | |
+  | |   \___/   | |        | |   \___/   | |
+  | |___     ___| |        | |___________| |
+  |_____${AnsiColor.BLUE}|\_/|${AnsiColor.DEFAULT}_____|        |_______________|
+    _|__${AnsiColor.BLUE}|/ \|${AnsiColor.DEFAULT}_|_.............._|________|_
+   / ********** \            / ********** \
+ /  ************  \        /  ************  \
+--------------------      --------------------
