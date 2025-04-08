@@ -1,8 +1,9 @@
 package ru.otus.hw.dao;
 
 import com.opencsv.bean.CsvToBeanBuilder;
-import java.io.FileReader;
-import java.net.URL;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import ru.otus.hw.config.TestFileNameProvider;
@@ -24,8 +25,8 @@ public class CsvQuestionDao implements QuestionDao {
     @Override
     public List<Question> findAll() {
         List<QuestionDto> questionsDto;
-        URL resource = getClass().getClassLoader().getResource(fileNameProvider.getTestFileName());
-        try (FileReader reader = new FileReader(resource.getFile())) {
+        InputStream inputStream = getClass().getClassLoader().getResourceAsStream(fileNameProvider.getTestFileName());
+        try (BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream))) {
             questionsDto = new CsvToBeanBuilder(reader)
                     .withType(QuestionDto.class)
                     .withSkipLines(LINE_SKIP_COUNT)

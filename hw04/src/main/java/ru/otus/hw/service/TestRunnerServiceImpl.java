@@ -10,8 +10,6 @@ public class TestRunnerServiceImpl implements TestRunnerService {
 
     private final TestService testService;
 
-    private final StudentService studentService;
-
     private final ResultService resultService;
 
     @Override

@@ -12,7 +12,7 @@ import ru.otus.hw.service.TestRunnerService;
 
 @ShellComponent(value = "Application Testing Student Command")
 @RequiredArgsConstructor
-public class ApplicationEventsCommands {
+public class ApplicationCommands {
     private final LoginContext loginContext;
 
     private final StudentService studentService;
@@ -30,7 +30,7 @@ public class ApplicationEventsCommands {
 
     @ShellMethod(value = "Start testing", key = {"s", "S", "Start", "start", "t", "T", "Test", "test"})
     @ShellMethodAvailability(value = "isStatTestingCommandAvailability")
-    public void isStatTesting() {
+    public void startTesting() {
         var student = loginContext.getStudent();
         testRunnerService.run(student);
     }
