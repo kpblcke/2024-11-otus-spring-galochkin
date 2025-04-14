@@ -36,15 +36,15 @@ public class JdbcBookRepository implements BookRepository {
         String sql = """
             select
                 b.id as book_id, b.title as book_title,
-                a.id as author_id, a.full_name as author_name,
-                g.id as genre_id, g.name as genre_name
+                a.id as author_id, a.full_name as author_name
             from books b
             inner join authors a on b.author_id = a.id
-            inner join books_genres bg on bg.book_id = b.id
-            inner join genres g on g.id = bg.genre_id
             where b.id = :id
         """;
         Book book = jdbc.query(sql, Map.of("id", id), new BookResultSetExtractor());
+        if (book != null) {
+            book.setGenres(genreRepository.getAllByBookId(id));
+        }
         return Optional.ofNullable(book);
     }
 
@@ -157,7 +157,7 @@ public class JdbcBookRepository implements BookRepository {
     }
 
     private void removeGenresRelationsFor(Book book) {
-        jdbc.update("delete books_genres where book_id", Map.of("id", book.getId()));
+        jdbc.update("delete from books_genres where book_id = :id", Map.of("id", book.getId()));
     }
 
     private static class BookGenreRelationMapper implements RowMapper<BookGenreRelation> {
@@ -186,7 +186,6 @@ public class JdbcBookRepository implements BookRepository {
         }
     }
 
-    @RequiredArgsConstructor
     private static class BookResultSetExtractor implements ResultSetExtractor<Book> {
 
         @Override
@@ -200,7 +199,6 @@ public class JdbcBookRepository implements BookRepository {
                     book.setAuthor(author);
                     book.setGenres(new ArrayList<>());
                 }
-                book.getGenres().add(new Genre(rs.getLong("genre_id"), rs.getString("genre_name")));
             }
             return book.getId() != 0L ? book : null;
         }
