@@ -2,7 +2,6 @@ package ru.otus.hw.service;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -46,7 +45,6 @@ class CommentServiceTest {
 
     @DisplayName("должен найти комментарий по id")
     @Test
-    @Order(1)
     public void shouldFindCommentById() {
         var actualComment = commentService.findById(1L);
 
@@ -57,7 +55,6 @@ class CommentServiceTest {
 
     @DisplayName("должен найти комментарий по id книги")
     @Test
-    @Order(2)
     public void shouldFindCommentByBookId() {
         var actualComments = commentService.findByBookId(1L);
 
@@ -69,7 +66,7 @@ class CommentServiceTest {
 
     @DisplayName("должен добавлять новый комментарий")
     @Test
-    @Order(3)
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void shouldAddNewComment() {
         var insertedComment = commentService.insert("Such a nice book", 1L);
         var dbComment = commentService.findById(insertedComment.getId());
@@ -81,7 +78,7 @@ class CommentServiceTest {
 
     @DisplayName("должен обновлять комментарий")
     @Test
-    @Order(4)
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void shouldUpdateComment() {
         var oldComment = commentService.findById(1L);
         var updatedComment = commentService.update(oldComment.get().getId(), "Such a nice book_2", 1L);
@@ -94,7 +91,7 @@ class CommentServiceTest {
 
     @DisplayName("должен удалять комментарий по id")
     @Test
-    @Order(5)
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     public void shouldDeleteBookById() {
         commentService.deleteById(1L);
         var actualComment = commentService.findById(1L);

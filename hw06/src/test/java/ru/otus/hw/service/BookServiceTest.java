@@ -4,7 +4,6 @@ import java.util.Set;
 import java.util.stream.Collectors;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.MethodOrderer;
-import org.junit.jupiter.api.Order;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.TestMethodOrder;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -43,7 +42,6 @@ class BookServiceTest {
 
     @DisplayName("должен найти книгу по id")
     @Test
-    @Order(1)
     void shouldFindBookById() {
         var actualBook = bookService.findById(1L);
 
@@ -57,7 +55,6 @@ class BookServiceTest {
 
     @DisplayName("должен найти все книги")
     @Test
-    @Order(2)
     void shouldFindAllBooks() {
         var actualBooks = bookService.findAll();
 
@@ -71,7 +68,7 @@ class BookServiceTest {
 
     @DisplayName("должен добавлять новую книгу")
     @Test
-    @Order(3)
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void shouldAddNewBook() {
         var insertedBook = bookService.insert("Test_Title_book", 1L, Set.of(1L));
         var dbBook = bookService.findById(insertedBook.getId());
@@ -83,14 +80,13 @@ class BookServiceTest {
 
     @DisplayName("должен выбросить EntityNotFoundException при создании")
     @Test
-    @Order(4)
     void shouldThrowEntityNotFoundExceptionAtInsert() {
         assertThrows(EntityNotFoundException.class, () -> bookService.insert("Test_Title_book", 1111, Set.of(1L)));
     }
 
     @DisplayName("должен обновлять книгу")
     @Test
-    @Order(5)
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void shouldUpdateBook() {
         var oldBook = bookService.findById(1L);
         var genreIds = oldBook.get().getGenres().stream().map(GenreDTO::getId).collect(Collectors.toSet());
@@ -104,7 +100,6 @@ class BookServiceTest {
 
     @DisplayName("должен выбросить EntityNotFoundException при обновлении")
     @Test
-    @Order(6)
     void shouldThrowEntityNotFoundExceptionAtUpdate() {
         var oldBook = bookService.findById(1L);
         var genreIds = oldBook.get().getGenres().stream().map(GenreDTO::getId).collect(Collectors.toSet());
@@ -115,7 +110,7 @@ class BookServiceTest {
 
     @DisplayName("должен удалять книгу по id")
     @Test
-    @Order(7)
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
     void shouldDeleteBookById() {
         bookService.deleteById(1L);
         var actualBook = bookService.findById(1L);

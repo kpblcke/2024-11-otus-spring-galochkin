@@ -21,6 +21,7 @@ import lombok.NoArgsConstructor;
 
 import java.util.List;
 import lombok.Setter;
+import lombok.ToString;
 import org.hibernate.annotations.Fetch;
 import org.hibernate.annotations.FetchMode;
 
@@ -43,11 +44,15 @@ public class Book {
 
     @ManyToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL)
     @JoinColumn(name = "author_id")
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private Author author;
 
     @ManyToMany(fetch = FetchType.LAZY, cascade = CascadeType.PERSIST)
     @Fetch(FetchMode.SUBSELECT)
     @JoinTable(name = "books_genres", joinColumns = @JoinColumn(name = "book_id"),
             inverseJoinColumns = @JoinColumn(name = "genre_id"))
+    @ToString.Exclude
+    @EqualsAndHashCode.Exclude
     private List<Genre> genres;
 }
