@@ -50,7 +50,7 @@ class JpaCommentRepositoryTest {
         commentRepository.save(newComment);
         Comment actualComment = entityManager.find(Comment.class, newComment.getId());
 
-        assertThat(actualComment).usingRecursiveComparison().isEqualTo(newComment);
+        assertThat(actualComment).isEqualTo(newComment);
     }
 
     @DisplayName("должен обновлять комментарий")
@@ -62,7 +62,7 @@ class JpaCommentRepositoryTest {
         commentRepository.save(comment);
         var actualComment = entityManager.find(Comment.class, comment.getId());
 
-        assertThat(actualComment).usingRecursiveComparison().isEqualTo(comment);
+        assertThat(actualComment).isEqualTo(comment);
     }
 
     @DisplayName("должен удалять комментарий")

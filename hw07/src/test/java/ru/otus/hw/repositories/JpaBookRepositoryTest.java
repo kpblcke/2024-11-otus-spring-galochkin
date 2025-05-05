@@ -57,9 +57,7 @@ class JpaBookRepositoryTest {
         bookRepository.save(newBook);
         var actualBook = entityManager.find(Book.class, newBook.getId());
 
-        assertThat(actualBook)
-                .usingRecursiveComparison()
-                .isEqualTo(newBook);
+        assertThat(actualBook).isEqualTo(newBook);
     }
 
     @DisplayName("должен сохранять измененную книгу")
@@ -71,9 +69,7 @@ class JpaBookRepositoryTest {
         bookRepository.save(book);
         var actualBook = entityManager.find(Book.class, book.getId());
 
-        assertThat(actualBook)
-                .usingRecursiveComparison()
-                .isEqualTo(book);
+        assertThat(actualBook).isEqualTo(book);
     }
 
 
