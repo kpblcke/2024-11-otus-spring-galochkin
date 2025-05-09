@@ -32,3 +32,4 @@ target/
 *.project
 maven-repo/
 .m2/
+/node_modules/
