@@ -3,6 +3,7 @@ import Button from "@mui/material/Button";
 import {Modal, Stack} from "@mui/material";
 import Box from "@mui/material/Box";
 import DeleteIcon from '@mui/icons-material/Delete';
+import { deleteApiData } from '../../requests/BookApi.js';
 
 const style = {
     position: 'absolute',
@@ -16,26 +17,6 @@ const style = {
     pt: 2,
     px: 4,
     pb: 3,
-};
-
-const deleteApiData = async (id, action) => {
-    await fetch(
-        "/api/v1/books/" + id,
-        {
-            method: "DELETE",
-            headers: {
-                "Content-Type": "application/json",
-            },
-        }
-    );
-    await getApiData(action)
-};
-
-const getApiData = async (setData) => {
-    const response = await fetch(
-        "/api/v1/books"
-    ).then((response) => response.json());
-    setData(response);
 };
 
 export default function NestedModal(props) {

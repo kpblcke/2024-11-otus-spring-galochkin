@@ -28,7 +28,7 @@ public class BookShortDTO {
     @NotNull(message = "Author can not be empty")
     private Long authorId;
 
-    @JsonProperty("genres")
+    @JsonProperty("genresIds")
     @NotEmpty(message = "Book must contain at least one genre")
     private Set<Long> genresIds;
 

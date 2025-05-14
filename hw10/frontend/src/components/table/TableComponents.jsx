@@ -11,18 +11,8 @@ import Button from "@mui/material/Button";
 import {Link} from "react-router-dom";
 import NestedModal from "../modal/ModalComponent.jsx";
 import {Stack} from "@mui/material";
+import {getApiFilteredData} from "../../requests/BookApi";
 
-const getApiData = async (setData, authorId) => {
-    let fetchUrl = "/api/v1/books";
-    if (authorId !== null) {
-        fetchUrl = fetchUrl.concat("?authorId=", authorId);
-    }
-
-    const response = await fetch(
-        fetchUrl
-    ).then((response) => response.json());
-    setData(response);
-};
 
 function BasicTable(props) {
 
@@ -33,7 +23,7 @@ function BasicTable(props) {
         const params = new URLSearchParams(hashParams);
         const authorId = params.get('authorId');
         console.log("author:" + authorId);
-        getApiData(setData, authorId);
+        getApiFilteredData(setData, authorId);
     }, []);
     return (
         <TableContainer component={Paper}>
