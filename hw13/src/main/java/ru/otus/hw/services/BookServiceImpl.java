@@ -57,7 +57,7 @@ public class BookServiceImpl implements BookService {
 
     @Transactional
     @Override
-    @PreAuthorize("hasPermission(#bookDTO.id, 'ru.otus.hw.models.Book', 'WRITE')")
+    @PreAuthorize("canChangeBook(#bookDTO.id)")
     public Book update(@Param("bookDTO") BookShortDTO bookDTO) {
         var book = getBookById(bookDTO.getId());
         var author = getAuthorById(bookDTO.getAuthorId());

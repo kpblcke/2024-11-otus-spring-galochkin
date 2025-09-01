@@ -34,6 +34,9 @@ databaseChangeLog:
               - column:
                   name: authority
                   type: varchar(255)
+              - column:
+                  name: role
+                  type: varchar(255)
       rollback:
         - dropTable:
             tableName: users
@@ -61,6 +64,9 @@ databaseChangeLog:
                   value: true
               - column:
                   name: authority
+                  value: READ
+              - column:
+                  name: role
                   value: USER1
         - insert:
             tableName: users
@@ -76,6 +82,9 @@ databaseChangeLog:
                   value: true
               - column:
                   name: authority
+                  value: WRITE
+              - column:
+                  name: role
                   value: ADMIN
         - insert:
             tableName: users
@@ -91,4 +100,7 @@ databaseChangeLog:
                   value: true
               - column:
                   name: authority
+                  value: READ
+              - column:
+                  name: role
                   value: USER2

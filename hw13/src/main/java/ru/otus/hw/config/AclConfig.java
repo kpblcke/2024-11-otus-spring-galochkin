@@ -1,13 +1,12 @@
 package ru.otus.hw.config;
 
 import javax.sql.DataSource;
+import org.springframework.aop.Advisor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.CacheManager;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.access.expression.method.DefaultMethodSecurityExpressionHandler;
-import org.springframework.security.access.expression.method.MethodSecurityExpressionHandler;
 import org.springframework.security.acls.AclPermissionCacheOptimizer;
 import org.springframework.security.acls.AclPermissionEvaluator;
 import org.springframework.security.acls.domain.AclAuthorizationStrategy;
@@ -17,11 +16,14 @@ import org.springframework.security.acls.domain.DefaultPermissionGrantingStrateg
 import org.springframework.security.acls.domain.SpringCacheBasedAclCache;
 import org.springframework.security.acls.model.AclCache;
 import org.springframework.security.acls.model.PermissionGrantingStrategy;
+import org.springframework.security.authorization.method.AuthorizationManagerBeforeMethodInterceptor;
 import org.springframework.security.config.annotation.method.configuration.EnableMethodSecurity;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.acls.jdbc.LookupStrategy;
 import org.springframework.security.acls.jdbc.BasicLookupStrategy;
 import org.springframework.security.acls.jdbc.JdbcMutableAclService;
+import ru.otus.hw.security.AclMethodSecurityExpressionHandler;
+import ru.otus.hw.security.CustomAuthorizationManager;
 
 @EnableCaching
 @EnableMethodSecurity
@@ -55,10 +57,14 @@ public class AclConfig {
     }
 
     @Bean
-    public MethodSecurityExpressionHandler defaultMethodSecurityExpressionHandler() {
-        DefaultMethodSecurityExpressionHandler expressionHandler = new DefaultMethodSecurityExpressionHandler();
-        AclPermissionEvaluator permissionEvaluator = new AclPermissionEvaluator(aclService());
-        expressionHandler.setPermissionEvaluator(permissionEvaluator);
+    public AclPermissionEvaluator aclPermissionEvaluator() {
+        return new AclPermissionEvaluator(aclService());
+    }
+
+    @Bean
+    public AclMethodSecurityExpressionHandler defaultMethodSecurityExpressionHandler() {
+        AclMethodSecurityExpressionHandler expressionHandler = new AclMethodSecurityExpressionHandler();
+        expressionHandler.setPermissionEvaluator(aclPermissionEvaluator());
         expressionHandler.setPermissionCacheOptimizer(new AclPermissionCacheOptimizer(aclService()));
         return expressionHandler;
     }
@@ -71,6 +77,11 @@ public class AclConfig {
     @Bean
     public JdbcMutableAclService aclService() {
         return new JdbcMutableAclService(dataSource, lookupStrategy(), aclCache());
+    }
+
+    @Bean
+    public Advisor preAuthorize(CustomAuthorizationManager manager) {
+        return AuthorizationManagerBeforeMethodInterceptor.preAuthorize(manager);
     }
 
 }
