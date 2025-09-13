@@ -20,7 +20,7 @@
             </column>
             <column name="password" type="varchar(255)"/>
             <column name="is_active" type="bool" defaultValue="false"/>
-            <column name="authority" type="varchar(255)"/>
+            <column name="role" type="varchar(255)"/>
         </createTable>
         <rollback>
             <delete tableName="comments"/>
@@ -36,13 +36,13 @@
             <column name="username" value="user"/>
             <column name="password" value="$2a$10$WNjeMNEiyFIszBkl.FdCEun.T1q/NuJL26xloV65w8CKjh6ciW3Xe"/>
             <column name="is_active" value="true"/>
-            <column name="authority" value="USER"/>
+            <column name="role" value="USER"/>
         </insert>
         <insert tableName="users">
             <column name="username" value="admin"/>
             <column name="password" value="$2a$10$mlXzmxPCXOwMCyV7RObAw.9BSfa2MIiVIZIzRDbxFqqYYxVJW6FNq"/>
             <column name="is_active" value="true"/>
-            <column name="authority" value="ADMIN"/>
+            <column name="role" value="ADMIN"/>
         </insert>
     </changeSet>
 

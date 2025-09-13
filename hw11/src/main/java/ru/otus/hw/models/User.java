@@ -27,7 +27,7 @@ public class User {
     @Column(name = "is_active")
     private Boolean isActive;
 
-    @Column(name = "authority")
-    private String authority;
+    @Column(name = "role")
+    private String role;
 
 }
