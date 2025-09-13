@@ -27,8 +27,7 @@ public class CommentServiceImpl implements CommentService {
     @Transactional(readOnly = true)
     @Override
     public Optional<CommentDTO> findById(String id) {
-        var commentDTO = commentRepository.findById(id).map(commentConverter::modelToDTO).orElse(null);
-        return Optional.ofNullable(commentDTO);
+        return commentRepository.findById(id).map(commentConverter::modelToDTO);
     }
 
     @Transactional(readOnly = true)
@@ -41,7 +40,10 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public CommentDTO insert(String content, String bookId) {
         var book = getBookById(bookId);
-        var comment =  new Comment(null, content, book);
+        var comment =  Comment.builder()
+                .content(content)
+                .book(book)
+                .build();
         return commentConverter.modelToDTO(commentRepository.save(comment));
     }
 

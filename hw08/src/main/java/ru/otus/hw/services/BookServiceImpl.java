@@ -31,14 +31,12 @@ public class BookServiceImpl implements BookService {
 
     private final BookConverter bookConverter;
 
-    @Transactional(readOnly = true)
     @Override
     public Optional<BookDTO> findById(String id) {
         var bookDTO = bookRepository.findById(id).map(bookConverter::modelToDTO).orElse(null);
         return Optional.ofNullable(bookDTO);
     }
 
-    @Transactional(readOnly = true)
     @Override
     public List<BookDTO> findAll() {
         return bookConverter.modelsToDTO(bookRepository.findAll());

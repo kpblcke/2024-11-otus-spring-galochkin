@@ -1,5 +1,6 @@
 package ru.otus.hw.services;
 
+import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -19,8 +20,10 @@ import ru.otus.hw.dto.GenreDTO;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import ru.otus.hw.exceptions.EntityNotFoundException;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatExceptionOfType;
 
 @DisplayName("Сервис для работы с книгами")
 @DataMongoTest
@@ -112,6 +115,36 @@ class BookServiceImplTest {
         assertThat(book).isPresent();
         serviceTest.deleteById(book.get().getId());
         assertThat(serviceTest.findById("1")).isEmpty();
+    }
+
+    @DisplayName("должен вернуть null, если книга не найдена")
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    void nullWhileNotFindBook() {
+        var book = serviceTest.findById("10");
+        assertThat(book).isEmpty();
+    }
+
+    @DisplayName("ошибка при обновлении не существующей книги")
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    void errorWhileUpdateBook() {
+        var book = serviceTest.findById("10");
+        assertThat(book).isEmpty();
+        assertThatExceptionOfType(EntityNotFoundException.class)
+                .isThrownBy(() -> serviceTest.update("10", "Book not finded", "1", Set.of("1", "2")))
+                .withMessage("Book with id 10 not found");
+    }
+
+    @DisplayName("ошибка при обновлении книги с несуществующим автором")
+    @Test
+    @DirtiesContext(methodMode = DirtiesContext.MethodMode.AFTER_METHOD)
+    void errorWhileUpdateAuthorBook() {
+        var book = serviceTest.findById("1");
+        assertThat(book).isPresent();
+        assertThatExceptionOfType(EntityNotFoundException.class)
+                .isThrownBy(() -> serviceTest.update("1", "Book not finded", "10", Set.of("1", "2")))
+                .withMessage("Author with id 10 not found");
     }
 
     private static List<AuthorDTO> getDbAuthors() {
