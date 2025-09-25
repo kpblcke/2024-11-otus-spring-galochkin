@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+            crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.slim.js"
+            integrity="sha256-UgvvN8vBkgO0luPSUl2s8TIlOSYRoGFAX4jlCIm9Adc=" crossorigin="anonymous"></script>
+    <title>Изменение книги</title>
+    <script src="api-service.js"></script>
+    <script>
+        var editBook = null;
+
+        async function loadData() {
+            try {
+                const { authors, genres } = await selectService.loadReferenceData();
+
+                selectService.fillAuthors(document.getElementById("book-author-list"), authors, editBook.author.id);
+                selectService.fillGenres(document.getElementById("book-genre-list"), genres, editBook.genre.id);
+            } catch (error) {
+                console.error('Error loading reference ', error);
+                alert('Failed to load reference data');
+            }
+        }
+
+        async function loadBook() {
+            try {
+                const urlParams = new URLSearchParams(window.location.search);
+                const bookId = urlParams.get('id');
+
+                if (!bookId) {
+                    throw new Error('Book ID not found in URL');
+                }
+
+                editBook = await apiService.call('getBook', { id: bookId });
+
+                document.getElementById('id').value = editBook.id;
+                document.getElementById('book-title-input').value = editBook.title;
+                loadData();
+            } catch (error) {
+                console.log(error);
+                alert((error.code || 'Error') + ' ' + (error.message || 'Failed to load book'));
+            }
+        }
+
+        async function updateBook() {
+            const idInput = document.getElementById('id');
+            const titleInput = document.getElementById('book-title-input');
+            const authorSelect = document.getElementById('book-author-list');
+            const genreSelect = document.getElementById('book-genre-list');
+
+            const book = {
+                id: idInput.value,
+                title: titleInput.value,
+                authorId: authorSelect.value,
+                genreId: genreSelect.value
+            };
+
+            try {
+                await apiService.call('updateBook', {}, book);
+                const cancelBtn = document.getElementById('cancel-button');
+                cancelBtn.click();
+            } catch (error) {
+                console.log(error);
+                alert((error.code || 'Error') + ' ' + (error.message || 'Failed to update book'));
+            }
+        }
+
+        window.addEventListener("load", function() {
+            loadBook();
+        });
+    </script>
+</head>
+
+<header>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-md">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="book.html">Книги</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="author.html">Авторы</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="genre.html" >Жанры</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
+</header>
+
+<body>
+<div class="container-sm mt-3 bg-white text-dark rounded mb-3">
+    <div class="row p-3">
+        <div class="d-flex justify-content-around">
+            <h3>Информация о книгах</h3>
+        </div>
+    </div>
+</div>
+
+<input id="id" type="hidden"/>
+
+
+<div class="container-sm mt-3 bg-white text-dark rounded mb-3">
+    <div class="row p-3">
+        <div class="book-edit-row mb-3">
+            <label for="book-title-input" class="book-edit-label form-label">Название:</label>
+            <input id="book-title-input" class="form-control" type="text"/>
+        </div>
+
+        <div class="book-edit-row mb-3">
+            <label for="book-author-list" class="book-edit-label form-label">Автор:</label>
+            <select id="book-author-list" class="book-edit-list form-select"></select>
+        </div>
+
+        <div class="book-edit-row mb-3">
+            <label for="book-genre-list" class="book-edit-label form-label">Жанр:</label>
+            <select id="book-genre-list" class="book-edit-list form-select"></select>
+        </div>
+
+        <div class="row p-2">
+            <button class="btn btn-primary" type="button" href="book.html" onclick="updateBook()">Сохранить</button>
+        </div>
+        <div class="row p-2">
+            <a class="btn btn-primary" href="book.html">Отмена</a>
+        </div>
+    </div>
+</div>
+</body>
+</html>
