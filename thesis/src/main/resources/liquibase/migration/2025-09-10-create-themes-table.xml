@@ -1,0 +1,47 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    
+    <changeSet id="1" author="ily.galochkin">
+        <preConditions onFail="WARN">
+            <not>
+                <tableExists tableName="themes"/>
+            </not>
+        </preConditions>
+        <comment>Создание таблицы themes</comment>
+        <createTable tableName="themes">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="name" type="varchar(255)"/>
+            <column name="description" type="text"/>
+        </createTable>
+        <rollback>
+            <delete tableName="themes"/>
+        </rollback>
+    </changeSet>
+
+    <changeSet id="2" author="ily.galochkin">
+        <preConditions onFail="WARN">
+            <not>
+                <tableExists tableName="event_themes"/>
+            </not>
+        </preConditions>
+        <comment>Создание таблицы event_themes</comment>
+        <createTable tableName="event_themes">
+            <column name="event_id" type="int">
+                <constraints deleteCascade="true" foreignKeyName="fk_event_themes_event" references="events(id)" nullable="false"/>
+            </column>
+            <column name="theme_id" type="int">
+                <constraints deleteCascade="true" foreignKeyName="fk_event_themes_theme" references="themes(id)" nullable="false"/>
+            </column>
+        </createTable>
+        <addPrimaryKey tableName="event_themes" columnNames="event_id,theme_id"/>
+        <rollback>
+            <delete tableName="event_themes"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

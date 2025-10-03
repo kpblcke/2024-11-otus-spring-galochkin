@@ -1,0 +1,36 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    
+    <changeSet id="1" author="ily.galochkin">
+        <preConditions onFail="WARN">
+            <not>
+                <tableExists tableName="events"/>
+            </not>
+        </preConditions>
+        <comment>Создание таблицы events</comment>
+        <createTable tableName="events">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="title" type="varchar(255)"/>
+            <column name="description" type="text"/>
+            <column name="price" type="float"/>
+            <column name="image_link" type="varchar(255)"/>
+            <column name="start_time" type="timestamp"/>
+            <column name="place_id" type="int">
+                <constraints deleteCascade="true" foreignKeyName="fk_event_place" references="place(id)"/>
+            </column>
+            <column name="image_id" type="int">
+                <constraints deleteCascade="true" foreignKeyName="fk_event_image" references="images(id)"/>
+            </column>
+        </createTable>
+        <rollback>
+            <delete tableName="events"/>
+        </rollback>
+    </changeSet>
+
+
+</databaseChangeLog>

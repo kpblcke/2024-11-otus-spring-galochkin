@@ -1,0 +1,36 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    
+    <changeSet id="1" author="ily.galochkin">
+        <preConditions onFail="WARN">
+            <not>
+                <tableExists tableName="subscriptions"/>
+            </not>
+        </preConditions>
+        <comment>Создание таблицы subscriptions</comment>
+        <createTable tableName="subscriptions">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="event_id" type="int">
+                <constraints deleteCascade="true" foreignKeyName="fk_subscriptions_event" references="events(id)"/>
+            </column>
+            <column name="theme_id" type="int">
+                <constraints deleteCascade="true" foreignKeyName="fk_subscriptions_theme" references="themes(id)"/>
+            </column>
+            <column name="place_id" type="int">
+                <constraints deleteCascade="true" foreignKeyName="fk_subscriptions_place" references="place(id)"/>
+            </column>
+            <column name="user_id" type="int">
+                <constraints deleteCascade="true" foreignKeyName="fk_subscriptions_user" references="users(id)" nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <delete tableName="subscriptions"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

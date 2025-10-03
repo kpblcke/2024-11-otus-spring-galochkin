@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta th:insert="header/head.html"/>
+    <title>Афиши</title>
+</head>
+
+<body class="bg-body-tertiary">
+<div th:insert="header/header.html"></div>
+<div class="container-sm mt-3 bg-white text-dark rounded mb-3">
+    <div class="row p-3">
+        <div class="d-flex justify-content-around">
+            <h3>Загрузить афишу</h3>
+        </div>
+    </div>
+</div>
+
+<div class="container-sm mt-3 bg-white text-dark rounded">
+    <div class="row p-3">
+        <form th:action="@{/image/upload}" th:method="post" enctype="multipart/form-data">
+            <input class="btn btn-primary" type="file" name="file" accept="image/*"/>
+            <button class="btn btn-primary" type="submit">Загрузить</button>
+        </form>
+    </div>
+    <hr>
+    <h4>Загруженные афиши</h4>
+    <div class="container-sm mt-3 bg-white text-dark rounded">
+        <div class="row p-3">
+            <div th:each="image : ${images}">
+                <p th:text="${image.name}"/>
+                <img th:src="'images/' + ${image.name}"
+                     alt="Uploaded image" style="max-width: 300px;"/>
+                <div th:each="analization : ${image.analizations}">
+                    <p th:text="${analization.answer}"/>
+                    <form class="form-create" action="../event/all"
+                          th:action="@{/event/create/{id}(id = ${analization.id})}" th:method="post">
+                        <button class="btn btn-primary" type="submit">Добавить событие</button>
+                    </form>
+                </div>
+                <hr>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+</html>

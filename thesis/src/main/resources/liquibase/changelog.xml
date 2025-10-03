@@ -1,0 +1,20 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+
+
+    <include file="liquibase/migration/2024-09-02_create_users_table.yml"/>
+    <include file="liquibase/migration/2024-09-12_create_acl_table.yml"/>
+    <include file="liquibase/migration/2024-09-12_add_acl_data.yml"/>
+    <include file="liquibase/migration/2025-09-10-create-image-table.xml"/>
+    <include file="liquibase/migration/2025-09-10-create-analization-table.xml"/>
+    <include file="liquibase/migration/2025-09-10-create-place-table.xml"/>
+    <include file="liquibase/migration/2025-09-10-create-events-table.xml"/>
+    <include file="liquibase/migration/2025-09-10-create-themes-table.xml"/>
+    <include file="liquibase/migration/2025-09-10-create-comment-table.xml"/>
+    <include file="liquibase/migration/2025-09-10-create-subscriptions-table.xml"/>
+    <include file="liquibase/sql/event_data.sql"/>
+
+</databaseChangeLog>
