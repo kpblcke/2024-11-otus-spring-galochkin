@@ -1,0 +1,29 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    
+    <changeSet id="1" author="ily.galochkin">
+        <preConditions onFail="WARN">
+            <not>
+                <tableExists tableName="analization"/>
+            </not>
+        </preConditions>
+        <comment>Создание таблицы analization</comment>
+        <createTable tableName="analization">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="answer" type="text"/>
+            <column name="processed" type="boolean"/>
+            <column name="image_id" type="int">
+                <constraints deleteCascade="true" foreignKeyName="fk_analization_image" references="images(id)" nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <delete tableName="analization"/>
+        </rollback>
+    </changeSet>
+
+</databaseChangeLog>

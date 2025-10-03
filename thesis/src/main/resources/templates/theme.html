@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta th:insert="header/head.html"/>
+    <title>Тематика</title>
+</head>
+
+<body class="bg-body-tertiary">
+<div th:insert="header/header.html"></div>
+<div class="container-sm mt-3 bg-white text-dark rounded mb-3">
+    <div class="row p-3">
+        <div class="d-flex justify-content-around">
+            <h3>Информация о видах мероприятий</h3>
+        </div>
+    </div>
+</div>
+
+<div class="container-sm mt-3 bg-white text-dark rounded">
+    <div class="row p-3">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="text-center">Название</th>
+                <th class="text-center">Описание</th>
+                <th class="text-center">Действие</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="theme : ${themes}">
+                <td class="text-center align-middle" th:text="${theme.name}"></td>
+                <td class="text-center align-middle" th:text="${theme.description}"></td>
+                <td class="text-center align-middle">
+                    <div th:switch="${theme.subscribed}" class="row p-3">
+                        <form th:case="${false}" class="form-subscribe" action="../theme/all"
+                              th:action="@{/subscription/theme/{themeId}(themeId = ${theme.id})}" th:method="post">
+                            <button class="btn btn-primary" type="submit">Подписаться</button>
+                        </form>
+                        <form th:case="${true}" class="form-unsubscribe" action="../theme/all"
+                              th:action="@{/subscription/theme/{themeId}/delete(themeId = ${theme.id})}" th:method="post">
+                            <button class="btn btn-primary" type="submit">Отписаться</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>

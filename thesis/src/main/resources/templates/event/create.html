@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta th:insert="header/head.html"/>
+    <title>Добавление мероприятия</title>
+</head>
+<div th:insert="header/header.html"></div>
+<body class="bg-body-tertiary">
+<div class="container-sm mt-3 bg-white text-dark rounded mb-3">
+    <div class="row p-3">
+        <form id="add-form" th:method="post" th:action="@{/event/create}"
+              th:object="${event}">
+            <div class="mb-3">
+                <label for="addId" class="form-label">Id события</label>
+                <input type="text" class="form-control" id="addId" readonly="readonly" value="1" th:field="*{id}">
+            </div>
+
+            <div class="mb-3">
+                <label for="addTitle" class="form-label">Название мероприятия</label>
+                <input type="text" class="form-control" id="addTitle" th:field="*{title}" placeholder="Название">
+                <div class="text-danger" th:if="${#fields.hasErrors('title')}"
+                     th:errors="*{title}">Wrong title</div>
+            </div>
+            <div class="mb-3">
+                <label for="addDescription" class="form-label">Описание мероприятия</label>
+                <input type="text" class="form-control" id="addDescription" th:field="*{description}" placeholder="Описание">
+                <div class="text-danger" th:if="${#fields.hasErrors('description')}"
+                     th:errors="*{description}">Wrong description</div>
+            </div>
+            <div class="mb-3">
+                <label for="addPrice" class="form-label">Стоимость мероприятия</label>
+                <input type="number" class="form-control" id="addPrice" th:field="*{price}" placeholder="Описание">
+                <div class="text-danger" th:if="${#fields.hasErrors('price')}"
+                     th:errors="*{price}">Wrong price</div>
+            </div>
+            <div class="mb-3">
+                <label for="addStartTime" class="form-label">Дата проведения мероприятия</label>
+                <input type="datetime-local" class="form-control" id="addStartTime" th:field="*{startTime}" placeholder="Время">
+                <div class="text-danger" th:if="${#fields.hasErrors('startTime')}"
+                     th:errors="*{startTime}">Wrong time</div>
+            </div>
+            <div class="mb-3">
+                <div class="container-sm mt-3 bg-white text-dark rounded">
+                    <img th:each="image : ${afisha}" th:src="'../image/images/' + ${image.name}" alt="Uploaded image"
+                         th:text="${image.name}" style="max-width: 100px;"/>
+                </div>
+                <label for="addImageLink" class="form-label">Фото афиши</label>
+                <input class="form-control" id="addImageLink" th:field="*{imageLink}" placeholder="Афиша" list="afisha-variant">
+                <div class="text-danger" th:if="${#fields.hasErrors('imageLink')}"
+                     th:errors="*{imageLink}">Wrong image link</div>
+                <datalist id="afisha-variant">
+                    <option th:each="image : ${afisha}" th:value="${image.name}"/>
+                </datalist>
+            </div>
+            
+            <div class="mb-3">
+                <label for="addPlace" class="form-label">Выбор места</label>
+                <select name="addPlace" id="addPlace" class="form-select" th:field="*{placeId}">
+                    <option th:each="place : ${places}" th:value="${place.id}" th:text="${place.name}" th:selected="*{placeId}"></option>
+                </select>
+                <div class="text-danger" th:if="${#fields.hasErrors('placeId')}"
+                     th:errors="*{placeId}">Wrong place error</div>
+            </div>
+            <div class="mb-3">
+                <label for="genre-multi-select" class="form-label">Выбор тематики</label>
+                <select class="select-multiple" size="6" id="genre-multi-select" th:field="*{themesIds}" multiple="multiple">
+                    <option th:each="theme : ${themes}" th:value="${theme.id}" th:text="${theme.name}">Fantasy
+
+                    </option>
+                </select>
+                <div class="errors" th:if="${#fields.hasErrors('themesIds')}" th:errors="*{themesIds}">Wrong themes</div>
+            </div>
+            <div class="row p-2">
+                <button class="btn btn-primary" type="submit">Сохранить</button>
+            </div>
+            <div class="row p-2">
+                <a class="btn btn-primary" href="#" th:href="@{/event}">Отмена</a>
+            </div>
+        </form>
+    </div>
+</div>
+</body>
+</html>

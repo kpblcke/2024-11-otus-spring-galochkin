@@ -1,0 +1,35 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:maindb
+
+  jpa:
+    generate-ddl: false
+    open-in-view: false
+    show-sql: true
+    hibernate:
+      ddl-auto: none
+
+  liquibase:
+    enabled: true
+    change-log: liquibase/changelog.xml
+
+  servlet:
+    multipart:
+      max-file-size: 10MB
+      max-request-size: 10MB
+
+  mail:
+    host: smtp.yandex.ru
+    port: 587
+    username: KpblcKe
+    password: ${YA_MAIL_PASSWORD}
+    properties.mail.smtp.auth: true
+    properties.mail.smtp.starttls.enable: true
+
+upload:
+  path: ${AFISHA_UPLOAD_PATH}
+
+gpt:
+  active: false
+  gigachat:
+    auth-key: ${GIGACHAT_AUTH}

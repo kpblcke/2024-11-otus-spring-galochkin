@@ -1,0 +1,33 @@
+<databaseChangeLog
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog
+        http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-3.0.xsd">
+    
+    <changeSet id="1" author="ily.galochkin">
+        <preConditions onFail="WARN">
+            <not>
+                <tableExists tableName="comments"/>
+            </not>
+        </preConditions>
+        <comment>Создание таблицы comments</comment>
+        <createTable tableName="comments">
+            <column name="id" type="int" autoIncrement="true">
+                <constraints primaryKey="true"/>
+            </column>
+            <column name="event_id" type="int">
+                <constraints deleteCascade="true" foreignKeyName="fk_comments_events" references="events(id)" nullable="false"/>
+            </column>
+            <column name="text" type="varchar(255)"/>
+            <column name="create_time" type="timestamp"/>
+            <column name="user_id" type="int">
+                <constraints deleteCascade="true" foreignKeyName="fk_comments_users" references="users(id)" nullable="false"/>
+            </column>
+        </createTable>
+        <rollback>
+            <delete tableName="comments"/>
+        </rollback>
+    </changeSet>
+
+
+</databaseChangeLog>

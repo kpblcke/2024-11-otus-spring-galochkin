@@ -1,0 +1,30 @@
+<header xmlns:th="http://www.thymeleaf.org">
+    <nav class="navbar navbar-expand-lg bg-body-tertiary">
+        <div class="container-md">
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <ul class="navbar-nav">
+                    <li class="nav-item">
+                        <a class="nav-link" href="event.html" th:href="@{/event/all}">События</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="place.html" th:href="@{/place/all}">Места</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="theme.html" th:href="@{/theme/all}">Тематики</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link" href="image.html" th:href="@{/image/all}">Афиши</a>
+                    </li>
+                </ul>
+            </div>
+            <div class="align-self-center">
+                <a class="nav-link" href="subscriptions.html" th:href="@{/subscription/user}">Подписки</a>
+            </div>
+            <div class="align-self-center">
+                <a class="link-secondary link-offset-2 link-underline link-underline-opacity-0" href="login-page.html" th:href="@{/login}">
+                    <i class="bi bi-box-arrow-right" style="font-size: 1.3rem"></i>
+                </a>
+            </div>
+        </div>
+    </nav>
+</header>

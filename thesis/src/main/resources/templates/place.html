@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta th:insert="header/head.html"/>
+    <title>Места</title>
+</head>
+
+<body class="bg-body-tertiary">
+<div th:insert="header/header.html"></div>
+<div class="container-sm mt-3 bg-white text-dark rounded mb-3">
+    <div class="row p-3">
+        <div class="d-flex justify-content-around">
+            <h3>Информация о месте</h3>
+        </div>
+    </div>
+</div>
+
+<div class="container-sm mt-3 bg-white text-dark rounded">
+    <div class="row p-3">
+        <table class="table">
+            <thead>
+            <tr>
+                <th class="text-center">Название</th>
+                <th class="text-center">Описание</th>
+                <th class="text-center">Адрес</th>
+                <th class="text-center">Действие</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr th:each="place : ${places}">
+                <td class="text-center align-middle" th:text="${place.name}"/>
+                <td class="text-center align-middle" th:text="${place.description}"/>
+                <td class="text-center align-middle" th:text="${place.address}"/>
+                <td class="text-center align-middle">
+                    <a class="btn btn-primary" href="../event.html"
+                       th:href="@{/event/place/{placeId}(placeId = ${place.id})}">Посмотреть мероприятия</a>
+                    <div th:switch="${place.subscribed}" class="row p-3">
+                        <form th:case="${false}" class="form-subscribe" action="../theme/all"
+                              th:action="@{/subscription/place/{placeId}(placeId = ${place.id})}" th:method="post">
+                            <button class="btn btn-primary" type="submit">Подписаться</button>
+                        </form>
+                        <form th:case="${true}" class="form-unsubscribe" action="../place/all"
+                              th:action="@{/subscription/place/{placeId}/delete(placeId = ${place.id})}" th:method="post">
+                            <button class="btn btn-primary" type="submit">Отписаться</button>
+                        </form>
+                    </div>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+</div>
+</body>
+</html>
